@@ -1,14 +1,18 @@
-#!/bin/zsh 
+#!/bin/zsh
 
-read "TARGET?Enter target ip or domain: " 
-read "URL?Enter target URL (https://example.com): "  
+read "TARGET?Enter target IP or domain: "
+read "URL?Enter target URL (https://example.com): "
+
 OUTDIR="$HOME/Desktop/reports/$TARGET"
+REPORT="$OUTDIR/report.md"
 
-for tool in gobuster nmap; do 
-    if ! which $tool &>/dev/null; then 
-        echo "$tool not found" 
-    fi 
-done 
+missing=0
+for tool in gobuster nmap; do
+    if ! which $tool &>/dev/null; then
+        echo "$tool not found"
+        missing=1
+    fi
+done
 
 echo "\nSelect tools to run:"
 echo "  1) nmap only"
@@ -16,19 +20,29 @@ echo "  2) gobuster only"
 echo "  3) both"
 read "CHOICE?Enter choice [1-3]: "
 
-mkdir -p $OUTDIR
-touch $OUTDIR/report.md
+if [[ $missing -eq 1 ]]; then
+    echo "One or more required tools are missing. Please install them and retry."
+    exit 1
+fi
 
-echo "# Recon Report - $TARGET" >> $OUTDIR/report.md 
+mkdir -p "$OUTDIR"
+echo "# Recon Report - $TARGET" > "$REPORT"
 
 run_nmap() {
-    echo "## nmap" >> $OUTDIR/report.md
-    sudo nmap -sV -sS -F $TARGET >> $OUTDIR/report.md 
+    echo "\n## Nmap" >> "$REPORT"
+    echo "Scan started: $(date)" >> "$REPORT"
+    sudo nmap -sV -sS -F "$TARGET" >> "$REPORT"
 }
 
 run_gobuster() {
-    echo "## gobuster" >> $OUTDIR/report.md
-    gobuster dir -u $URL -w /usr/share/seclists/Discovery/Web-Content/common.txt >> $OUTDIR/report.md 
+    echo "\n## Gobuster" >> "$REPORT"
+    echo "Scan started: $(date)" >> "$REPORT"
+    local wordlist="/usr/share/seclists/Discovery/Web-Content/common.txt"
+    if [[ ! -f "$wordlist" ]]; then
+        echo "Wordlist not found: $wordlist" | tee -a "$REPORT"
+        return 1
+    fi
+    gobuster dir -u "$URL" -w "$wordlist" >> "$REPORT"
 }
 
 case $CHOICE in
@@ -38,4 +52,5 @@ case $CHOICE in
     *) echo "Invalid choice, exiting."; exit 1 ;;
 esac
 
-cat $OUTDIR/report.md
+echo "\n--- Scan complete ---"
+cat "$REPORT"
