@@ -8,7 +8,6 @@ Hi! I'm Gl1tch S4ge, a 14-year-old passionate about cybersecurity, with a focus 
 - Age: 14  
 - Current Focus: Red Teaming / Purple Teaming  
 - Learning Platforms: TryHackMe, Hack The Box 
-- Tools I'm Exploring: Nmap, Burp-suite
 - OS Setup: Arch linux 
 
 ---
@@ -23,7 +22,7 @@ Hi! I'm Gl1tch S4ge, a 14-year-old passionate about cybersecurity, with a focus 
 
 ## 🔹 Goals
 - Master Linux and networking fundamentals  
-- Learn offensive security techniques ethically  
+- Learn offensive security techniques ethically and deffensive security techniques  
 - Build a public portfolio of labs, scripts, and CTF write-ups  
 - One day contribute to real-world red/purple team engagements  
 
