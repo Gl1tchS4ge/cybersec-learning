@@ -7,7 +7,7 @@ Hi! I'm Gl1tch S4ge, a 14-year-old passionate about cybersecurity, with a focus 
 ## 🔹 About Me
 - Age: 14  
 - Current Focus: Red Teaming / Purple Teaming  
-- Learning Platforms: TryHackMe, Hack The Box 
+- Learning Platforms: Hack The Box, home labs
 - OS Setup: Arch linux 
 
 ---
